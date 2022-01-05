@@ -1,0 +1,39 @@
+component: http
+name: http-nuxtjs-qi3dZPgLE
+inputs:
+  src:
+    dist: ./
+    hook: npm run build
+    exclude:
+      - .env
+  faas:
+    runtime: Nodejs12.16
+    framework: nuxtjs
+    name: '${name}'
+    environments:
+      - key: STATIC_URL
+        value: 'https://baga-jam-dev-1259310028.cos.ap-hongkong.myqcloud.com'
+    eip: true
+    timeout: 3
+    memorySize: 512
+    tags: [ ]
+    layers:
+      - name: '${output:${stage}:${app}:baga-jam-layer.name}'
+        version: '${output:${stage}:${app}:baga-jam-layer.version}'
+  apigw:
+    protocols:
+      - http
+      - https
+    timeout: 60
+    environment: release
+    customDomains: [ ]
+  region: ap-hongkong
+  isAutoCiDeploy: false
+  assets:
+    cos:
+      bucket: baga-jam-dev-1259310028
+      acl:
+        permissions: public-read
+org: '1259310028'
+app: baga-jam
+stage: dev

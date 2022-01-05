@@ -1,0 +1,13 @@
+org: '1259310028'
+app: baga-jam
+stage: dev
+component: layer
+name: baga-jam-layer
+inputs:
+  name: baga-jam-layer
+  region: ap-hongkong
+  src:
+    src: ../node_modules
+    targetDir: /node_modules
+  runtimes:
+    - Nodejs12.16
