@@ -1,13 +1,13 @@
 <template>
-  <div class="container">
+  <div class="center">
     <div>
       <logo/>
-      <h1 class="title">欢迎访问 Nuxt.js 应用</h1>
-      <h2 class="subtitle">
-        <a href="https://cloud.tencent.com/product/sls" target="_blank" rel="noopener noreferrer">
-          腾讯云 Serverless
-        </a>
-        为您提供服务 </h2>
+      <h2 class="subtitle">八嘎酱为您提供服务 </h2>
+      <router-link to="/bagajam">
+        <el-button type="primary" round>
+          <span class="btn">八嘎酱企业微信推送</span>
+        </el-button>
+      </router-link>
     </div>
   </div>
 </template>
@@ -18,12 +18,12 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo,
-  },
+  }
 }
 </script>
 
 <style>
-.container {
+.center {
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
@@ -32,25 +32,17 @@ export default {
   text-align: center;
 }
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-  'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 80px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
 .subtitle {
   font-weight: 300;
   font-size: 42px;
   color: #526488;
   word-spacing: 5px;
+  padding-top: 15px;
   padding-bottom: 15px;
 }
 
-.links {
-  padding-top: 15px;
+.btn {
+  font-size: larger;
 }
+
 </style>
