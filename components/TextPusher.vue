@@ -26,7 +26,7 @@ export default {
       msg: '',
       user: [],
       options: [],
-      pusher: this.$store.state.store.pusher
+      pusher: this.$store.state.WXPusher.pusher
     }
   },
   methods: {
@@ -40,13 +40,13 @@ export default {
         return
       }
       if (this.user.length !== 0)
-        this.pusher._user = this.user.join('|')
-      this.pusher.getTextData(this.msg)
-      this.pusher.send_message(this)
+        this.$store.commit('WXPusher/set_user', this.user.join('|'))
+      this.$store.commit('WXPusher/getTextData', this.msg.trim())
+      this.$store.dispatch('WXPusher/send_message', this)
     }
   },
-  created() {
-    console.log(this.pusher)
+  async created() {
+    this.options = await this.$store.dispatch('WXPusher/get_department_users')
   }
 }
 </script>
