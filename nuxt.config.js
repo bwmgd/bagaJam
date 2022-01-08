@@ -1,6 +1,6 @@
 export default {
   env: {
-    STATIC_URL: process.env.STATIC_URL || ''
+    STATIC_URL: process.env.STATIC_URL ? (process.env.STATIC_URL + '/_nuxt') : ''
   },
   /*
    ** Build configuration
@@ -11,7 +11,7 @@ export default {
     publicPath: process.env.STATIC_URL,
     extend(config, {isDev}) {
       if (!isDev && process.env.STATIC_URL) {
-        config.output.publicPath = process.env.STATIC_URL + '/_nuxt'
+        config.output.publicPath = process.env.STATIC_URL
       }
     }
   },
