@@ -8,9 +8,8 @@ export default {
   build: {
     vendor: ['axios'],
     assetsPublicPath: './',
-
     extend(config) {
-      config.output.publicPath = './'
+      config.output.publicPath = './_nuxt'
     }
   },
   /*
