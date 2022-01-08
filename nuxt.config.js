@@ -68,12 +68,20 @@ export default {
     credentials: true // 表示跨域请求时是否需要使用凭证
   },
   proxy: {
+    '/api/token': {
+      target: 'https://service-g9r03zpd-1259310028.bj.apigw.tencentcs.com/release', // 目标接口域名
+      changeOrigin: true, // 表示是否跨域
+      pathRewrite: {
+        '^/api': '/', // 把 /api 替换成 /
+      }
+    },
     '/api': {
       target: 'https://qyapi.weixin.qq.com/cgi-bin', // 目标接口域名
       changeOrigin: true, // 表示是否跨域
       pathRewrite: {
         '^/api': '/', // 把 /api 替换成 /
       }
-    }
+    },
+
   },
 }

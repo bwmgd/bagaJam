@@ -4,13 +4,6 @@ import {Loading} from 'element-ui'
 export const state = () => ({
   // 这里是全局数据保存的地方
   pusher: {
-    base_url: '/api/gettoken?',
-    req_url: '/api/message/send?access_token=',
-    corpid: 'wwa6e28ccb97409686',  // 企业ID
-    // corpsecret : 'O-kTjsdKeP5ldE0ojjWn3Km5FvyrP4NgdtY9ub4cK0s',  // 企业微信应用的Secret
-    // agentid : 1000004,  # 企业微信应用的AgentId
-    corpsecret: 'PUWjJ-p2d_sI5PcvYGMpLvEWreDpJYQ2sHVqRt_l4eU',
-    agentid: 1000007,
     user: '@all',
     data: {}
   }
@@ -47,7 +40,7 @@ export const actions = {
         'touser': context.state.pusher.user,
         'toparty': '@all',
         'totag': '@all',
-        'agentid': context.state.pusher.agentid,
+        'agentid': 1000007,
         'safe': 0,
         'enable_id_trans': 0,
         'enable_duplicate_check': 0,
@@ -56,7 +49,7 @@ export const actions = {
     }
   },
   async get_access_token(context) {
-    const urls = context.state.pusher.base_url + 'corpid=' + context.state.pusher.corpid + '&corpsecret=' + context.state.pusher.corpsecret
+    const urls = '/api/token'
     return axios.get(urls)
   },
 
@@ -64,10 +57,10 @@ export const actions = {
     let loading = Loading.service({target: target.$el})
     context.dispatch('get_access_token').then((res) => {
       console.log('token', res)
-      const token = res.data['access_token']
+      const token = res.data
       context.dispatch('get_data').then((data) => {
         console.log('data', data)
-        const req_urls = context.state.pusher.req_url + token
+        const req_urls = '/api/message/send?access_token=' + token
         axios.post(req_urls, data).then((res) => {
           console.log('msg', res)
           const data = res.data
@@ -100,7 +93,7 @@ export const actions = {
 
   async get_media_id(context, path, file_type) {
     return context.dispatch('get_access_token').then((res) => {
-      const token = res.data['access_token']
+      const token = res.data
       const req_urls = '/api/media/upload?access_token=' + token + '&type=' + file_type
       const file = {'media': open(path, 'rb')} //TODO
       return axios.post(req_urls, data)//return res.data['media_id']
@@ -110,7 +103,7 @@ export const actions = {
   async get_department_users(context) {
     return context.dispatch('get_access_token').then((res) => {
         console.log('token', res)
-        const token = res.data['access_token']
+      const token = res.data
         console.log('the_token', token)
         const req_urls = '/api/user/simplelist?' +
           'access_token=' + token + '&department_id=1&fetch_child=1'
