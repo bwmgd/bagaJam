@@ -111,7 +111,7 @@ export const actions = {
     return context.dispatch('get_access_token').then((res) => {
         console.log('token', res)
         const token = res.data['access_token']
-        console.log('token', token, res.get('data'))
+        console.log('the_token', token)
         const req_urls = '/api/user/simplelist?' +
           'access_token=' + token + '&department_id=1&fetch_child=1'
         return axios.post(req_urls)
