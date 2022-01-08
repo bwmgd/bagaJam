@@ -9,7 +9,7 @@ export default {
     vendor: ['axios'],
     assetsPublicPath: './',
     extend(config) {
-      config.output.publicPath = './_nuxt'
+      config.output.publicPath = './_nuxt/'
     }
   },
   /*
