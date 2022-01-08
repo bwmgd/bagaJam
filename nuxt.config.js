@@ -10,9 +10,9 @@ export default {
    ** Build configuration
    */
   build: {
-    babel: {
-      plugins
-    },
+    // babel: {
+    //   plugins
+    // },
     vendor: ['axios'],
     publicPath: './_nuxt/',
     assetsPublicPath: './',
