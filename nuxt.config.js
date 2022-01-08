@@ -1,32 +1,30 @@
 export default {
-  env: {
-    STATIC_URL: process.env.STATIC_URL ? (process.env.STATIC_URL + '/_nuxt') : ''
-  },
+  // env: {
+  //   STATIC_URL: process.env.STATIC_URL ? (process.env.STATIC_URL + '/_nuxt') : ''
+  // },
   /*
    ** Build configuration
    */
   build: {
     vendor: ['axios'],
     assetsPublicPath: './',
-    publicPath: process.env.STATIC_URL,
-    extend(config, {isDev}) {
-      if (!isDev && process.env.STATIC_URL) {
-        config.output.publicPath = process.env.STATIC_URL
-      }
+
+    extend(config) {
+      config.output.publicPath = './'
     }
   },
   /*
    ** Headers of the page
    */
   head: {
-    title: 'Serverless Nuxt.js Application',
+    title: '八嘎酱',
     meta: [
       {charset: 'utf-8'},
       {name: 'viewport', content: 'width=device-width, initial-scale=1'},
       {
         hid: 'description',
         name: 'description',
-        content: 'Serverless Nuxt.js Application Created By Serverless Framework'
+        content: '八嘎酱-net'
       }
     ],
     link: [
