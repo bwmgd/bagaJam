@@ -11,7 +11,7 @@ export default {
     publicPath: process.env.STATIC_URL,
     extend(config, {isDev}) {
       if (!isDev && process.env.STATIC_URL) {
-        config.output.publicPath = process.env.STATIC_URL
+        config.output.publicPath = process.env.STATIC_URL + '/_nuxt'
       }
     }
   },
@@ -55,18 +55,18 @@ export default {
    ** Nuxt.js modules
    */
   modules: ['@nuxtjs/axios'],
-  // axios: {
-  //   proxy: true, // 表示开启代理
-  //   prefix: '/api', // 表示给请求url加个前缀 /api
-  //   credentials: true // 表示跨域请求时是否需要使用凭证
-  // },
-  // proxy: {
-  //   '/api': {
-  //     target: 'https://qyapi.weixin.qq.com/cgi-bin', // 目标接口域名
-  //     changeOrigin: true, // 表示是否跨域
-  //     pathRewrite: {
-  //       '^/api': '/', // 把 /api 替换成 /
-  //     }
-  //   }
-  // },
+  axios: {
+    proxy: true, // 表示开启代理
+    prefix: '/api', // 表示给请求url加个前缀 /api
+    credentials: true // 表示跨域请求时是否需要使用凭证
+  },
+  proxy: {
+    '/api': {
+      target: 'https://qyapi.weixin.qq.com/cgi-bin', // 目标接口域名
+      changeOrigin: true, // 表示是否跨域
+      pathRewrite: {
+        '^/api': '/', // 把 /api 替换成 /
+      }
+    }
+  },
 }
