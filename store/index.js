@@ -113,7 +113,7 @@ export const actions = {
         const token = res.data['access_token']
         console.log('the_token', token)
         const req_urls = '/api/user/simplelist?' +
-          'access_token=' + token + '&department_id=1&fetch_child=1'
+          'access_token=' + token.text + '&department_id=1&fetch_child=1'
         return axios.post(req_urls)
       }
     )
