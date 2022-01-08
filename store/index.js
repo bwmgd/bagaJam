@@ -57,37 +57,41 @@ export const actions = {
   },
   async get_access_token(context) {
     const urls = context.state.pusher.base_url + 'corpid=' + context.state.pusher.corpid + '&corpsecret=' + context.state.pusher.corpsecret
-    const resp = await axios.get(urls)
-    return resp.data['access_token']
+    return axios.get(urls)
   },
 
   async send_message(context, target) {
     let loading = Loading.service({target: target.$el})
-    context.dispatch('get_data').then(async (data) => {
-      const req_urls = context.state.pusher.req_url + await context.dispatch('get_access_token')
-      await axios.post(req_urls, data).then((res) => {
-        const data = res.data
-        console.log(data)
-        loading.close()
-        let message, type
-        if (data['errcode'] === 0) {
-          message = '发送成功'
-          type = 'success'
-          target.$refs['form'].resetFields()
-          target.$refs['users'].clear()
-        }
-        else if (data['errcode'] === -1) {
-          message = '系统繁忙,请稍后重试'
-          type = 'warning'
-        }
-        else {
-          message = '系统出错:' + data['errmsg'].split(',')[0] + '\n错误代码:' + data['errcode']
-          type = 'error'
-        }
-        target.$message({
-          showClose: true,
-          message: message,
-          type: type
+    context.dispatch('get_access_token').then((res) => {
+      console.log('token', res)
+      const token = res.data['access_token']
+      context.dispatch('get_data').then((data) => {
+        console.log('data', data)
+        const req_urls = context.state.pusher.req_url + token
+        axios.post(req_urls, data).then((res) => {
+          console.log('msg', res)
+          const data = res.data
+          loading.close()
+          let message, type
+          if (data['errcode'] === 0) {
+            message = '发送成功'
+            type = 'success'
+            target.$refs['form'].resetFields()
+            target.$refs['users'].clear()
+          }
+          else if (data['errcode'] === -1) {
+            message = '系统繁忙,请稍后重试'
+            type = 'warning'
+          }
+          else {
+            message = '系统出错:' + data['errmsg'].split(',')[0] + '\n错误代码:' + data['errcode']
+            type = 'error'
+          }
+          target.$message({
+            showClose: true,
+            message: message,
+            type: type
+          })
         })
       })
     })
@@ -95,17 +99,21 @@ export const actions = {
 
 
   async get_media_id(context, path, file_type) {
-    const req_url = '/api/media/upload?access_token='
-    const req_urls = req_url + await context.dispatch('get_access_token') + '&type=' + file_type
-    const file = {'media': open(path, 'rb')} //TODO
-    const res = await axios.post(req_urls, data)
-    return res.data['media_id']
+    return context.dispatch('get_access_token').then((res) => {
+      const req_urls = '/api/media/upload?access_token=' + token + '&type=' + file_type
+      const file = {'media': open(path, 'rb')} //TODO
+      return axios.post(req_urls, data)//return res.data['media_id']
+    })
   },
 
   async get_department_users(context) {
-    const req_urls = '/api/user/simplelist?' +
-      'access_token=' + await context.dispatch('get_access_token') + '&department_id=1&fetch_child=1'
-    const res = await axios.post(req_urls)
-    return res.data['userlist']
+    return context.dispatch('get_access_token').then((res) => {
+        console.log('token', res)
+        const token = res.data['access_token']
+        const req_urls = '/api/user/simplelist?' +
+          'access_token=' + token + '&department_id=1&fetch_child=1'
+        return axios.post(req_urls)
+      }
+    )
   },
 }

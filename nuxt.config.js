@@ -1,15 +1,25 @@
+let plugins = []
+if (process.env.NODE_ENV === 'production') {
+  plugins.push('transform-remove-console')
+}
 export default {
   // env: {
-  //   STATIC_URL: process.env.STATIC_URL ? (process.env.STATIC_URL + '/_nuxt') : ''
+  //   STATIC_URL: ''
   // },
   /*
    ** Build configuration
    */
   build: {
+    babel: {
+      plugins
+    },
     vendor: ['axios'],
+    publicPath: './_nuxt/',
     assetsPublicPath: './',
-    extend(config) {
-      config.output.publicPath = './_nuxt/'
+    extend(config, {isDev}) {
+      if (!isDev && process.env.STATIC_URL) {
+        config.output.publicPath = './_nuxt/'
+      }
     }
   },
   /*

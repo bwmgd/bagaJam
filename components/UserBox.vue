@@ -26,7 +26,10 @@ export default {
     }
   },
   async created() {
-    this.options = await this.$store.dispatch('get_department_users')
+    this.$store.dispatch('get_department_users').then((res) => {
+      console.log('userlist', res)
+      return this.options = res.data['userlist']
+    })
   }
 }
 </script>
