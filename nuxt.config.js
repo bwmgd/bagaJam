@@ -1,7 +1,7 @@
-let plugins = []
-if (process.env.NODE_ENV === 'production') {
-  plugins.push('transform-remove-console')
-}
+// let plugins = []
+// if (process.env.NODE_ENV === 'production') {
+//   plugins.push('transform-remove-console')
+// }
 export default {
   // env: {
   //   STATIC_URL: ''

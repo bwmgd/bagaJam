@@ -100,6 +100,7 @@ export const actions = {
 
   async get_media_id(context, path, file_type) {
     return context.dispatch('get_access_token').then((res) => {
+      const token = res.data['access_token']
       const req_urls = '/api/media/upload?access_token=' + token + '&type=' + file_type
       const file = {'media': open(path, 'rb')} //TODO
       return axios.post(req_urls, data)//return res.data['media_id']
