@@ -27,6 +27,16 @@ export const mutations = {
         'content': data
       }
     }
+  },
+  getTextCardData(state, data, title, url) {
+    state.pusher.data = {
+      'msgtype': 'textcard',
+      'textcard': {
+        'title': title,
+        'description': data,
+        'url': url,
+      }
+    }
   }
 }
 
@@ -59,11 +69,12 @@ export const actions = {
         const data = res.data
         console.log(data)
         loading.close()
-        let message
-        let type
+        let message, type
         if (data['errcode'] === 0) {
           message = '发送成功'
           type = 'success'
+          target.$refs['form'].resetFields()
+          target.$refs['users'].clear()
         }
         else if (data['errcode'] === -1) {
           message = '系统繁忙,请稍后重试'

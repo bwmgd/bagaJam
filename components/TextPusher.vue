@@ -1,58 +1,63 @@
 <template>
-  <el-card class="box-card">
-    <el-row :gutter="20">
-      <el-col :span="16">
-        <el-select v-model="user" multiple filterable placeholder="请选择用户标签,留空为全体" class="user">
-          <el-option v-for="i in options" :key="i['userid']" :value="i['userid']"></el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="8">
-        <el-button type="primary" @click="send">发送</el-button>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-input v-model="msg" placeholder="请输入要推送的内容" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
-    </el-row>
-
-  </el-card>
+  <el-form ref="form" :rules="rules" :model="ruleForm">
+    <el-card class="box-card">
+      <el-form-item prop="users">
+        <UserBox @send="send" ref="users"></UserBox>
+      </el-form-item>
+      <el-form-item prop="msgs">
+        <el-input placeholder="请输入要推送的内容" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"
+                  v-model="ruleForm.msgs"></el-input>
+      </el-form-item>
+    </el-card>
+  </el-form>
 </template>
 
 <script>
 
+import UserBox from '@/components/UserBox'
+
 export default {
   name: 'TextPusher',
+  components: {UserBox},
   data() {
+    let validateMsg = (rule, value, callback) => {
+      if (!value || value.trim() === '') {
+        return callback(new Error('内容不能为空'))
+      }
+      return callback()
+    }
     return {
       msg: '',
-      user: [],
       options: [],
-      pusher: this.$store.state.WXPusher.pusher
+      ruleForm: {
+        msgs: '',
+        users: []
+      },
+      rules: {
+        msgs: [{validator: validateMsg, trigger: 'blur'}]
+      },
     }
   },
   methods: {
-    send() {
-      if (!this.msg || this.msg.trim() === '') {
-        this.$message({
-          showClose: true,
-          message: '内容不能为空',
-          type: 'warning'
-        })
-        return
-      }
-      if (this.user.length !== 0)
-        this.$store.commit('WXPusher/set_user', this.user.join('|'))
-      this.$store.commit('WXPusher/getTextData', this.msg.trim())
-      this.$store.dispatch('WXPusher/send_message', this)
-    }
-  },
-  async created() {
-    this.options = await this.$store.dispatch('WXPusher/get_department_users')
+    send(users) {
+      let store = this.$store
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          if (users.length !== 0)
+            store.commit('set_user', users.join('|'))
+          store.commit('getTextData', this.ruleForm.msgs.trim())
+          store.dispatch('send_message', this)
+        }
+        else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
   }
 }
 </script>
 
 <style scoped>
-.user {
-  margin-bottom: 20px;
-}
+
 </style>
