@@ -54,10 +54,14 @@ export default {
   },
   methods: {
     getData() {
+      let url = 'https://bwmgd.ml'
+      if (this.ruleForm.url && this.ruleForm.url.trim() !== '') {
+        url = this.protocol + this.ruleForm.url.trim()
+      }
       let data = {
         'message': this.ruleForm.msgs.trim(),
         'title': this.ruleForm.title.trim(),
-        'url': this.protocol + this.ruleForm.url.trim()
+        'url': url
       }
       this.$refs['form'].validate((valid) => {
         if (!valid) {
