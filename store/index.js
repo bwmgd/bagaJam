@@ -4,13 +4,20 @@ import Qs from 'qs'
 
 export const state = () => ({
   // 这里是全局数据保存的地方
-  pusher: {
-    user: '@all',
-    data: {}
-  }
+  pusher_map: [
+    {name: 'TextPusher', label: '文本消息', url: '/text'},
+    {name: 'TextCardPusher', label: '文本卡片消息', url: '/text_card'},
+    {name: 'MpNewsPusher', label: '图文消息', url: '/text'},
+    {name: 'VideoPusher', label: '视频消息', url: '/video'},
+    {name: 'ImagePusher', label: '图片消息', url: '/image'},
+    {name: 'FilePusher', label: '文件消息', url: '/file'}
+  ],
 })
 
 export const actions = {
+  get_pusher_map(context, index) {
+    return context.state.pusher_map[index]
+  },
   async send_message(context, [target, url, data, users]) {
     let loading = Loading.service({target: target.$el})
     if (users.length !== 0)
@@ -27,8 +34,7 @@ export const actions = {
         if (data['errcode'] === 0) {
           message = '发送成功'
           type = 'success'
-          target.$refs['form'].resetFields()
-          target.$refs['users'].clear()
+          target.clear()
         }
         else if (data['errcode'] === -1) {
           message = '系统繁忙,请稍后重试'

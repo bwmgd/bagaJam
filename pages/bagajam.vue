@@ -1,27 +1,39 @@
 <template>
   <div class="container">
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="文本推送" name="first"></el-tab-pane>
-      <el-tab-pane label="标题+内容" name="second"></el-tab-pane>
-      <el-tab-pane label="角色管理" name="third"></el-tab-pane>
-      <el-tab-pane label="定时任务补偿" name="fourth"></el-tab-pane>
-      <TextPusher></TextPusher>
+    <el-tabs v-model="activeIndex" @tab-click="tabClick">
+      <el-tab-pane v-for="i in $store.state.pusher_map" :label="i['label']" :key="i['name']"></el-tab-pane>
+      <PusherCard :select_pusher="select_pusher"></PusherCard>
     </el-tabs>
-
   </div>
 </template>
 
 <script>
-import TextPusher from '~/components/TextPusher'
+
+import PusherCard from '@/components/PushCard'
 
 export default {
   name: 'bagajam',
-  components: {TextPusher},
+  components: {PusherCard},
   data() {
     return {
-      activeName: 'first'
+      activeIndex: 0,
+      select_pusher: {}
     }
   },
+  created() {
+    this.$store.dispatch('get_pusher_map', this.activeIndex).then((res) => {
+      this.select_pusher = res
+      console.log(res)
+    })
+  },
+  methods: {
+    tabClick() {
+      this.$store.dispatch('get_pusher_map', this.activeIndex).then((res) => {
+        this.select_pusher = res
+        console.log(res)
+      })
+    },
+  }
 }
 </script>
 
