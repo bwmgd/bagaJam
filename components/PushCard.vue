@@ -1,16 +1,21 @@
 <template>
   <el-card class="box-card">
-    <el-row :gutter="20" class="user">
+    <el-row type="flex" justify="space-between" class="user">
       <el-col :span="16">
         <el-select v-model="users" multiple filterable placeholder="请选择用户标签,留空为全体" class="select">
           <el-option v-for="i in options" :key="i" :value="i"></el-option>
         </el-select>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="4">
         <el-button type="primary" @click="send">发送</el-button>
       </el-col>
+      <el-col :span="4">
+        <el-button type="info" @click="clear">清空</el-button>
+      </el-col>
     </el-row>
-    <component :is="select_pusher['name']" :ref="select_pusher['name']"></component>
+    <keep-alive>
+      <component :is="select_pusher['name']" :ref="select_pusher['name']"></component>
+    </keep-alive>
     <!--    <component is="TextPusher" ref="TextPusher"></component>-->
   </el-card>
 </template>
@@ -48,7 +53,6 @@ export default {
   },
   async created() {
     axios.get('/api/department').then((res) => {
-      console.log('userlist', res)
       return this.options = res.data
     })
   }
@@ -66,5 +70,6 @@ export default {
 
 .select {
   display: flex;
+  margin-right: 20px;
 }
 </style>
