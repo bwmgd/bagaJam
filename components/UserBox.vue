@@ -2,7 +2,7 @@
   <el-row :gutter="20" class="user">
     <el-col :span="16">
       <el-select v-model="users" multiple filterable placeholder="请选择用户标签,留空为全体">
-        <el-option v-for="i in options" :key="i['userid']" :value="i['userid']"></el-option>
+        <el-option v-for="i in options" :key="i" :value="i"></el-option>
       </el-select>
     </el-col>
     <el-col :span="8">
@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'UserBox',
   data() {
@@ -26,9 +28,9 @@ export default {
     }
   },
   async created() {
-    this.$store.dispatch('get_department_users').then((res) => {
+    axios.get('/api/department').then((res) => {
       console.log('userlist', res)
-      return this.options = res.data['userlist']
+      return this.options = res.data
     })
   }
 }

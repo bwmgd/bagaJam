@@ -31,7 +31,6 @@ export default {
       options: [],
       ruleForm: {
         msgs: '',
-        users: []
       },
       rules: {
         msgs: [{validator: validateMsg, trigger: 'blur'}]
@@ -40,13 +39,12 @@ export default {
   },
   methods: {
     send(users) {
-      let store = this.$store
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          if (users.length !== 0)
-            store.commit('set_user', users.join('|'))
-          store.commit('getTextData', this.ruleForm.msgs.trim())
-          store.dispatch('send_message', this)
+          let data = {
+            'message': this.ruleForm.msgs.trim()
+          }
+          this.$store.dispatch('send_message', [this, '/api/text', data, users])
         }
         else {
           console.log('error submit!!')

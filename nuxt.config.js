@@ -1,7 +1,9 @@
-// let plugins = []
-// if (process.env.NODE_ENV === 'production') {
-//   plugins.push('transform-remove-console')
-// }
+let plugins = []
+let target = 'http://127.0.0.1:9000/' // 目标接口域名
+if (process.env.NODE_ENV === 'production') {
+  // plugins.push('transform-remove-console')
+  target = 'https://service-g9r03zpd-1259310028.bj.apigw.tencentcs.com/release' // 目标接口域名
+}
 export default {
   // env: {
   //   STATIC_URL: ''
@@ -10,9 +12,9 @@ export default {
    ** Build configuration
    */
   build: {
-    // babel: {
-    //   plugins
-    // },
+    babel: {
+      plugins
+    },
     vendor: ['axios'],
     publicPath: './_nuxt/',
     assetsPublicPath: './',
@@ -68,15 +70,8 @@ export default {
     credentials: true // 表示跨域请求时是否需要使用凭证
   },
   proxy: {
-    '/api/token': {
-      target: 'https://service-g9r03zpd-1259310028.bj.apigw.tencentcs.com/release', // 目标接口域名
-      changeOrigin: true, // 表示是否跨域
-      pathRewrite: {
-        '^/api': '/', // 把 /api 替换成 /
-      }
-    },
     '/api': {
-      target: 'https://qyapi.weixin.qq.com/cgi-bin', // 目标接口域名
+      target: target, // 目标接口域名
       changeOrigin: true, // 表示是否跨域
       pathRewrite: {
         '^/api': '/', // 把 /api 替换成 /
