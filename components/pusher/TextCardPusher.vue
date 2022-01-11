@@ -6,8 +6,8 @@
     <el-form-item prop="url">
       <el-input placeholder="请输入网址,留空则为八嘎酱主页" v-model="ruleForm.url">
         <el-select slot="prepend" v-model="protocol" class="protocol">
-          <el-option value="http://"></el-option>
           <el-option value="https://"></el-option>
+          <el-option value="http://"></el-option>
         </el-select>
       </el-input>
     </el-form-item>
@@ -49,11 +49,11 @@ export default {
         url: [{validator: validateURL, trigger: 'blur'}],
         title: [{validator: validateMsg, trigger: 'blur'}],
       },
-      protocol: 'http://'
+      protocol: 'https://'
     }
   },
   methods: {
-    getData() {
+    send(target, api, users) {
       let url = 'https://bwmgd.ml'
       if (this.ruleForm.url && this.ruleForm.url.trim() !== '') {
         url = this.protocol + this.ruleForm.url.trim()
@@ -63,15 +63,18 @@ export default {
         'title': this.ruleForm.title.trim(),
         'url': url
       }
-      this.$refs['form'].validate((valid) => {
+      this.$refs.form.validate((valid) => {
         if (!valid) {
           data = false
           console.log('error submit!!')
           return false
         }
       })
-      return data
+      return this.$store.dispatch('send_message', [target, api, data, users, target.clear])
     },
+    clear() {
+      this.$refs.form.resetFields()
+    }
   }
 }
 </script>

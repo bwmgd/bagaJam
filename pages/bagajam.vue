@@ -23,14 +23,12 @@ export default {
   created() {
     this.$store.dispatch('get_pusher_map', this.activeIndex).then((res) => {
       this.select_pusher = res
-      console.log(res)
     })
   },
   methods: {
     tabClick() {
       this.$store.dispatch('get_pusher_map', this.activeIndex).then((res) => {
         this.select_pusher = res
-        console.log(res)
       })
     },
   }

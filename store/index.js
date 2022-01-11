@@ -1,6 +1,5 @@
 import axios from 'axios'
 import {Loading} from 'element-ui'
-import Qs from 'qs'
 
 export const state = () => ({
   // 这里是全局数据保存的地方
@@ -12,21 +11,27 @@ export const state = () => ({
     {name: 'ImagePusher', label: '图片消息', url: '/image'},
     {name: 'FilePusher', label: '文件消息', url: '/file'}
   ],
+  IMAGE_TYPE: ['.jpg', '.png']
 })
 
 export const actions = {
   get_pusher_map(context, index) {
     return context.state.pusher_map[index]
   },
-  async send_message(context, [target, url, data, users]) {
+  async send_message(context, [target, api, data, users, success_callback]) {
     let loading = Loading.service({target: target.$el})
     if (users.length !== 0)
       data.user = users.join('|')
+    console.log(data)
+    const form_data = new FormData()
+    for (const key in data) {
+      form_data.append(key, data[key])
+    }
     let message, type = 'error'
     axios({
       method: 'post',
-      url: url,
-      data: Qs.stringify(data)
+      url: api,
+      data: form_data
     })
       .then((res) => {
         console.log('msg', res)
@@ -34,7 +39,9 @@ export const actions = {
         if (data['errcode'] === 0) {
           message = '发送成功'
           type = 'success'
-          target.clear()
+          if (success_callback)
+            success_callback()
+          else target.clear()
         }
         else if (data['errcode'] === -1) {
           message = '系统繁忙,请稍后重试'

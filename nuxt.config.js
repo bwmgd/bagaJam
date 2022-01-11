@@ -15,6 +15,7 @@ export default {
     babel: {
       plugins
     },
+    transpile: ['element-ui'],
     vendor: ['axios'],
     publicPath: './_nuxt/',
     assetsPublicPath: './',
@@ -30,7 +31,7 @@ export default {
   head: {
     title: '八嘎酱',
     meta: [
-      {charset: 'utf-8'},
+      {charset: 'utf-8', lang: 'zh-CN',},
       {name: 'viewport', content: 'width=device-width, initial-scale=1'},
       {
         hid: 'description',

@@ -41,27 +41,25 @@ export default {
   },
   methods: {
     send() {
-      const data = this.$refs[this.select_pusher['name']].getData()
-      this.$store.dispatch('send_message', [
-        this, '/api' + this.select_pusher['url'], data, this.users
-      ])
+      this.$refs[this.select_pusher['name']].send(this, '/api' + this.select_pusher['url'], this.users)
     },
     clear() {
       this.users = []
-      this.$refs[this.select_pusher['name']].$refs['form'].resetFields()
+      this.$refs[this.select_pusher['name']].clear()
     }
   },
   async created() {
     axios.get('/api/department').then((res) => {
       return this.options = res.data
     })
-  }
+  },
 }
 </script>
 
 <style scoped>
 .box-card {
   margin: 0 40px 0 40px;
+  width: 510px;
 }
 
 .user {

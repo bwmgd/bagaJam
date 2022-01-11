@@ -29,19 +29,25 @@ export default {
     }
   },
   methods: {
-    getData() {
+    send(target, api, users) {
       let data = {
         'message': this.ruleForm.msgs.trim()
       }
-      this.$refs['form'].validate((valid) => {
+      this.$refs.form.validate((valid) => {
         if (!valid) {
           data = false
           console.log('error submit!!')
           return false
         }
       })
-      return data
+      return this.$store.dispatch('send_message', [target, api, data, users, () => {
+        this.clear()
+        target.clear()
+      }])
     },
+    clear() {
+      this.$refs.form.resetFields()
+    }
   }
 }
 </script>
